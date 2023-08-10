@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="../styles/styles.css" class="style-sheet">
+    <title>Casos Nuevos</title>
+</head>
+<body>
+    <header>
+        <figure>
+            <img class="global-logo" src="../assets/logo-globalr-white.png" alt="global-logo">
+        </figure>
+        <div>
+            <h2>Gestión de Problemas</h2>
+        </div>
+        <div class="buttons-container">
+            <button class="solicitudes-btn" onclick="abrirSolicitudes()">Gestión</button>
+            <button class="casos-btn" onclick="abrirCasos2()">Casos</button>
+        </div>
+        <span class="material-symbols-outlined dark">
+            dark_mode
+            </span>
+        <span class="material-symbols-outlined ligth">
+            light_mode
+             </span>
+    </header>
+    <table id="TableToExport"></table>
+    <button id="sheetjsexport"><b>Export as XLSX</b></button>
+    <!--<input type="file" id="input_dom_element">-->
+    <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    <script src="../scripts/variables.js"></script>
+    <script src="../scripts/navegacion.js"></script>
+    <script>
+        const dataList = [];
+        const table = document.querySelector('#TableToExport');
+        document.getElementById("sheetjsexport").addEventListener('click', function() {
+        /* Create worksheet from HTML DOM TABLE */
+        var wb = XLSX.utils.table_to_book(document.getElementById('TableToExport'));
+        /* Export to file (start a download) */
+        XLSX.writeFile(wb, "SheetJSTable.xlsx");
+    });
+    async function col() {
+        const arr = []
+        for (let i = 2; i < casosNuevos + 3; i++) {
+            const trContainer = document.createElement('tr');
+            trContainer.setAttribute('class', `tr${i}`)
+            arr.push(trContainer);
+        }
+        const url = "https://docs.google.com/spreadsheets/d/1S9nNz_IztRSwoJduJAiKbU-hTd1f72Dalj2SUo4awUI/edit?usp=sharing";
+        const data = await (await fetch(url)).arrayBuffer();
+        /* data is an ArrayBuffer*/ 
+        const workbook = XLSX.read(data);
+        console.log(workbook);
+        for (const property in workbook['Sheets']['Sheet1']) {
+            for (let j = 2; j < casosNuevos + 3; j++) {
+                if (property.toString().endsWith(`${j}`) && workbook['Sheets']['Sheet1'][property].w.length > 2) {
+                    const newTd = document.createElement('td');
+                    newTd.textContent = workbook['Sheets']['Sheet1'][property].w;
+                    if (arr[j - 2].childElementCount < 5) {
+                        arr[j - 2].appendChild(newTd);
+                    } 
+                }
+            }
+        }
+        table.append(...arr);
+        }
+    col();
+    </script>
+</body>
+</html>

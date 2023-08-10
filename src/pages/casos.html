@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="../styles/styles.css" class="style-sheet">
+    <title>Casos</title>
+</head>
+<body>
+    <header>
+        <figure>
+            <img class="global-logo" src="../assets/logo-globalr-white.png" alt="global-logo">
+        </figure>
+        <div>
+            <h2>Gestión de Problemas</h2>
+        </div>
+        <div class="buttons-container">
+            <button class="solicitudes-btn" onclick="abrirSolicitudes()">Gestión</button>
+            <button class="casos-btn" onclick="abrirCasos()">Casos</button>
+        </div>
+        <span class="material-symbols-outlined dark">
+            dark_mode
+            </span>
+        <span class="material-symbols-outlined ligth">
+            light_mode
+             </span>
+    </header>
+    <h1>Casos Problema Julio 2023</h1>
+    <main>
+        <div class="problemas-curso-container">
+            <div class="problemas-title-container">
+                <h2>Casos problema en curso</h2>
+            </div>
+            <div class="problemas-inputs-container">
+                <div>
+                    <h3>Casos en Diagnóstico</h3>
+                    <div class="input">11</div>
+                </div>
+                <div>
+                    <h3>Casos en Desarrollo</h3>
+                    <div class="input">86</div>
+                </div>
+                <div>
+                    <h3>PKE en Curso</h3>
+                    <div class="input">91</div>
+                </div>
+                <p><strong>Total PBI en curso:</strong> 11 Diagnóstico + 86 Desarrollo = <strong>97</strong></p>
+            </div>
+        </div>
+        <div class="casos-grupo-asignados-container">
+            <canvas id="casos-grupo-asignados"></canvas>
+        </div>
+        <div class="resumen-gestion-container">
+            <div class="gestion-title-container">
+                <h2>Resumen de la gestión de casos</h2>
+            </div>
+            <div class="gestion-inputs-container">
+                <div class="nuevos-container">
+                    <h3>Casos Nuevos</h3>
+                    <div class="input nuevos">11</div>
+                </div>
+                <div>
+                    <h3>Casos Escalados</h3>
+                    <div class="input">6</div>
+                </div>
+                <div>
+                    <h3>Casos Cerrados</h3>
+                    <div class="input">9</div>
+                </div>
+                <div>
+                    <h3>Diagnóstico por terceros</h3>
+                    <div class="input">1</div>
+                </div>
+                <div>
+                    <h3>Gestionados en diagnóstico</h3>
+                    <div class="input">7</div>
+                </div>
+            </div>
+        </div>
+        <div class="casos-grupo-diagnosticados-container">
+            <canvas id="casos-grupo-diagnosticados"></canvas>
+        </div>
+        <div class="escalados-grupo-container">
+            <canvas id="escalados-grupo"></canvas>
+        </div>
+        <div class="promedios-gestion-container">
+            <div class="promedios-title-container">
+                <h2>Promedios de la gestión de casos</h2>
+            </div>
+            <div class="promedios-inputs-container">
+                <div class="promedios-diagnostico">
+                    <h3>Prom. Días en diagnóstico</h3>
+                    <div class="input">59</div>
+                </div>
+                <div class="tooltip1">Es el promedio de las diferencias de las fechas de escalamiento menos las fechas de apertura.</div>
+                <div class="promedios-desarrollo">
+                    <h3>Prom. Días en desarrollo</h3>
+                    <div class="input">108</div>
+                </div>
+                <div class="tooltip2">Es el promedio de las diferencias de las fechas de cierre menos las fechas de escalamiento.</div>
+                <div class="promedios-cerrados">
+                    <h3>Prom. Días en cerrarse</h3>
+                    <div class="input">104</div>
+                </div>
+                <div class="tooltip3">Es el promedio de las diferencias de las fechas de cierre menos las fechas de apertura.</div>
+            </div>
+        </div>
+        <div class="escalados-aplicacion-container">
+            <canvas id="escalados-aplicacion"></canvas>
+        </div>
+        <div class="casos-especiales-container">
+            <div>
+                <h3>Casos Asociados a Proyecto</h3>
+                <div class="input">19</div>
+            </div>
+            <div>
+                <h3>Casos con WA</h3>
+                <div class="input">7</div>
+            </div>
+            <div>
+                <h3>Casos TOP</h3>
+                <div class="input">7</div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../scripts/variables.js"></script>
+    <script src="../scripts/toolTips.js"></script>
+    <script>
+        const asignadosGrafico = document.getElementById('casos-grupo-asignados');
+        const asignados = ['GlobalR', 'Telefónica', 'Sin Asignar'];
+        const dataAsignados = {
+            labels: asignados,
+            datasets: [{
+                label: 'Casos Problema Asignados por Grupo Diagnóstico',
+                barPercentage: 0.3,
+                barThickness: 20,
+                data: [6, 1, 4],
+                backgroundColor: '#17CAD1'
+            }]
+        }
+        const configAsignados = {
+            type: 'bar',
+            data: dataAsignados,
+            options: {
+                scales: {
+                    y: {
+                        ticks: {
+                            color: '#374649'
+                        }
+                    },
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#374649'
+                        }
+                    }
+                },
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        labels: {
+                            // This more specific font property overrides the global property
+                            font: {
+                                size: 12,
+                                weight: 700
+                            }
+                        }
+                    }
+                },
+                color: '#374649'
+            },
+        }; 
+        (async function() {
+            new Chart(
+                asignadosGrafico,
+                configAsignados
+            );
+        })();
+        if(innerWidth < 768) {
+            Chart.defaults.font.size = 8;
+        }
+        if(innerWidth >= 768) {
+            Chart.defaults.font.size = 12;
+        }
+    </script>
+    <script>
+        const diagnosticadosGrafico = document.getElementById('casos-grupo-diagnosticados');
+        const diagnosticados = ['GlobalR', 'Telefónica', 'Terceros'];
+        const dataDiagnosticados = {
+            labels: diagnosticados,
+            datasets: [{
+                label: 'Casos Problema Diagnosticados por Grupo',
+                barPercentage: 0.3,
+                barThickness: 20,
+                data: [0, 5, 1],
+                backgroundColor: '#17CAD1'
+            }]
+        }
+        const configDiagnosticados = {
+            type: 'bar',
+            data: dataDiagnosticados,
+            options: {
+                scales: {
+                    y: {
+                        ticks: {
+                            color: '#374649'
+                        }
+                    },
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#374649'
+                        }
+                    }
+                },
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        labels: {
+                            // This more specific font property overrides the global property
+                            font: {
+                                size: 14,
+                                weight: 700
+                            }
+                        }
+                    }
+                },
+                color: '#374649'
+            },
+        }; 
+        (async function() {
+            new Chart(
+                diagnosticadosGrafico,
+                configDiagnosticados
+            );
+        })();
+    </script>
+    <script>
+        const gruposGrafico = document.getElementById('escalados-grupo');
+        const grupos = ['Integraciones de Servicios', 'Interconexión Cliente', 'Planes y Promociones', 'Plataforma TI', 'Soporte a la Operación', 'Soporte al Negocio', 'Integración de Servicios', 'Soporte Nivel 1', 'Bases de Datos', 'Seguridad'];
+        const dataGrupos = {
+            labels: grupos,
+            datasets: [{
+                label: 'Casos Escalados por Grupo',
+                barPercentage: 0.3,
+                barThickness: 5,
+                data: [23, 9, 1, 25, 8, 20, 23, 4, 1, 1],
+                backgroundColor: '#17CAD1'
+            }]
+        }
+        const configGrupos = {
+            type: 'bar',
+            data: dataGrupos,
+            options: {
+                scales: {
+                    y: {
+                        ticks: {
+                            color: '#374649'
+                        }
+                    },
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#374649'
+                        }
+                    }
+                },
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        labels: {
+                            // This more specific font property overrides the global property
+                            font: {
+                                size: 14,
+                                weight: 700
+                            }
+                        }
+                    }
+                },
+                color: '#374649'
+            },
+        }; 
+        (async function() {
+            new Chart(
+                gruposGrafico,
+                configGrupos
+            );
+        })();
+    </script>
+    <script>
+        const graficoAplicaciones = document.getElementById('escalados-aplicacion');
+        const aplicaciones = ['Casos SIP+', 'Casos MM'];
+        const dataAplicaciones = {
+            labels: aplicaciones,
+            datasets: [{
+                label: 'Casos Escalados por Aplicación Relevante',
+                barPercentage: 0.3,
+                barThickness: 50,
+                data: [10, 2],
+                backgroundColor: '#17CAD1',
+            }]
+        }
+        const configAplicaciones = {
+            type: 'bar',
+            data: dataAplicaciones,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#374649',
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#374649'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            // This more specific font property overrides the global property
+                            font: {
+                                size: 12,
+                                weight: 700
+                            }
+                        }
+                    }
+                },
+                color: '#374649'
+            },
+        }; 
+        
+        (async function() {
+            new Chart(
+                graficoAplicaciones,
+                configAplicaciones
+            );
+        })();
+    </script>
+    <script src="../scripts/navegacion.js"></script>
+</body>
+</html>
