@@ -17,4 +17,4 @@ const abrirCasos2 = () => {
     location.href = './casos.html';
 }
 
-nuevosContainer.addEventListener('click', abrirCasosNuevos);
+//nuevosContainer.addEventListener('click', abrirCasosNuevos);
